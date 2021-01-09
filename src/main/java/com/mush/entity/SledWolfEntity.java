@@ -115,6 +115,19 @@ public class SledWolfEntity extends WolfEntity implements ISledComponent {
 				
 			}
 			
+			if (((ISledComponent) getLeashHolder()).getFollowingEntity() == null || ((ISledComponent) getLeashHolder()).getFollowingEntityUUID() == null) {
+				
+				((ISledComponent) getLeashHolder()).setFollowingEntity(this);
+				((ISledComponent) getLeashHolder()).setFollowingEntityUUID(this.getUniqueID());
+				
+				if (getSledEntity() != null) {
+					
+					getSledEntity().recalculateWolfCount();
+					
+				}
+				
+			}
+			
 			if (getFollowingEntity() != null) {
 				
 				if (getFollowingEntity().removed || getFollowingEntity().getLeashHolder() != this) {
@@ -273,6 +286,7 @@ public class SledWolfEntity extends WolfEntity implements ISledComponent {
 									
 									mobentity.setLeashHolder(this, true);
 									setFollowingEntityUUID(mobentity.getUniqueID());
+									setFollowingEntity(mobentity);
 									mobentity.setSledEntityUUID(getSledEntityUUID());
 									getSledEntity().recalculateWolfCount();
 									
