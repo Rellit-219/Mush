@@ -22,5 +22,6 @@
 	"block.mush.ash_door": "Ash Door",
 	"entity.mush.sled_wolf": "Wolf",
 	"entity.mush.sled": "Sled",
-	"entity.minecraft.villager.mush.musher": "Musher"
+	"entity.minecraft.villager.mush.musher": "Musher",
+	"mush:snow_plains": "Snowy Plains"
 }

@@ -41,6 +41,18 @@ public class LookAtSledComponentGoal extends Goal {
 				
 				return false;
 				
+			} else if (((SledWolfEntity) tameable).getSledEntity() != null && ((SledWolfEntity) tameable).getSledEntityUUID() != null) {
+				
+				if (((SledWolfEntity) tameable).getSledEntity().getControllingPassenger() != null) {
+					
+					return true;
+					
+				} else {
+					
+					return false;
+					
+				}
+				
 			}
 			
 		}

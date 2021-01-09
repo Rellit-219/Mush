@@ -5,6 +5,16 @@ import java.util.UUID;
 
 import com.mush.entity.ai.goal.FollowSledComponentGoal;
 import com.mush.entity.ai.goal.LookAtSledComponentGoal;
+import com.mush.entity.ai.goal.SWFollowOwnerGoal;
+import com.mush.entity.ai.goal.SWLeapAtTargetGoal;
+import com.mush.entity.ai.goal.SWLookAtGoal;
+import com.mush.entity.ai.goal.SWLookRandomlyGoal;
+import com.mush.entity.ai.goal.SWMeleeAttackGoal;
+import com.mush.entity.ai.goal.SWNearestAttackableTargetGoal;
+import com.mush.entity.ai.goal.SWNonTamedTargetGoal;
+import com.mush.entity.ai.goal.SWOwnerHurtByTargetGoal;
+import com.mush.entity.ai.goal.SWOwnerHurtTargetGoal;
+import com.mush.entity.ai.goal.SWWaterAvoidingRandomWalkingGoal;
 import com.mush.entity.ai.goal.SledLeaderControllingGoal;
 import com.mush.entity.item.SledEntity;
 
@@ -18,6 +28,9 @@ import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.ResetAngerGoal;
 import net.minecraft.entity.ai.goal.SitGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
+import net.minecraft.entity.monster.AbstractSkeletonEntity;
+import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.entity.passive.TurtleEntity;
 import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.passive.horse.LlamaEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -295,21 +308,21 @@ public class SledWolfEntity extends WolfEntity implements ISledComponent {
 		this.goalSelector.addGoal(1, new SwimGoal(this));
 		this.goalSelector.addGoal(2, new SitGoal(this));
 		this.goalSelector.addGoal(3, new SledWolfEntity.AvoidEntityGoal(this, LlamaEntity.class, 24.0F, 1.5D, 1.5D));
-		//this.goalSelector.addGoal(4, new LeapAtTargetGoal(this, 0.4F));
-		//this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.0D, true));
-		//this.goalSelector.addGoal(6, new FollowOwnerGoal(this, 1.0D, 10.0F, 2.0F, false));
+		this.goalSelector.addGoal(4, new SWLeapAtTargetGoal(this, 0.4F));
+		this.goalSelector.addGoal(5, new SWMeleeAttackGoal(this, 1.0D, true));
+		this.goalSelector.addGoal(6, new SWFollowOwnerGoal(this, 1.0D, 10.0F, 2.0F, false));
 		this.goalSelector.addGoal(7, new BreedGoal(this, 1.0D));
-		//this.goalSelector.addGoal(8, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
+		this.goalSelector.addGoal(8, new SWWaterAvoidingRandomWalkingGoal(this, 1.0D));
 		this.goalSelector.addGoal(9, new BegGoal(this, 8.0F));
-		//this.goalSelector.addGoal(10, new LookAtGoal(this, PlayerEntity.class, 8.0F));
-		//this.goalSelector.addGoal(10, new LookRandomlyGoal(this));
-		//this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
-		//this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
+		this.goalSelector.addGoal(10, new SWLookAtGoal(this, PlayerEntity.class, 8.0F));
+		this.goalSelector.addGoal(10, new SWLookRandomlyGoal(this));
+		this.targetSelector.addGoal(1, new SWOwnerHurtByTargetGoal(this));
+		this.targetSelector.addGoal(2, new SWOwnerHurtTargetGoal(this));
 		this.targetSelector.addGoal(3, (new HurtByTargetGoal(this)).setCallsForHelp());
-		//this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, 10, true, false, this::func_233680_b_));
-		//this.targetSelector.addGoal(5, new NonTamedTargetGoal<>(this, AnimalEntity.class, false, TARGET_ENTITIES));
-		//this.targetSelector.addGoal(6, new NonTamedTargetGoal<>(this, TurtleEntity.class, false, TurtleEntity.TARGET_DRY_BABY));
-		//this.targetSelector.addGoal(7, new NearestAttackableTargetGoal<>(this, AbstractSkeletonEntity.class, false));
+		this.targetSelector.addGoal(4, new SWNearestAttackableTargetGoal<>(this, PlayerEntity.class, 10, true, false, this::func_233680_b_));
+		this.targetSelector.addGoal(5, new SWNonTamedTargetGoal<>(this, AnimalEntity.class, false, TARGET_ENTITIES));
+		this.targetSelector.addGoal(6, new SWNonTamedTargetGoal<>(this, TurtleEntity.class, false, TurtleEntity.TARGET_DRY_BABY));
+		this.targetSelector.addGoal(7, new SWNearestAttackableTargetGoal<>(this, AbstractSkeletonEntity.class, false));
 		this.targetSelector.addGoal(8, new ResetAngerGoal<>(this, true));
 		
 	}
@@ -366,6 +379,12 @@ public class SledWolfEntity extends WolfEntity implements ISledComponent {
 	public void setFollowingEntityUUID(UUID uuid) {
 		
 		dataManager.set(FOLLOWING_UNIQUE_ID, Optional.ofNullable(uuid));
+		
+		if (!getEntityWorld().isRemote()) {
+			
+			setFollowingEntity((SledWolfEntity) ((ServerWorld) getEntityWorld()).getEntityByUuid(uuid));
+			
+		}
 		
 	}
 	
