@@ -17,3 +17,4 @@
 
  - I do have a WIP biome which I have been unsuccessful at finding organically, however it works if you use the Single Biome world option. It is called Snowy Plains, however in the world option screen it is mush:snow_plains.
  - I attempted and failed to add a structure in time for the competition. I intend to figure out how and add it later on in this mod's development. It is called a Villager Camp. It would have been found in the Snowy Plains biome and would be made up of tents and other camp related things. This is where you would have organically found a Musher villager and potentially wolf harnesses as a loot item from chests.
+ - Sleds in their current state do not have a chest inventory. I will add this in future versions.
