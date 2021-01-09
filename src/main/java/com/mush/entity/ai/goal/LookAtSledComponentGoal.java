@@ -64,7 +64,11 @@ public class LookAtSledComponentGoal extends Goal {
 	
 	public boolean shouldContinueExecuting() {
 		
-		if (tameable.getDistanceSq(followingEntity) > 144) {
+		if (followingEntity == null) {
+			
+			return false;
+			
+		} else if (tameable.getDistanceSq(followingEntity) > 144) {
 			
 			return false;
 			
@@ -90,7 +94,11 @@ public class LookAtSledComponentGoal extends Goal {
 
 	public void tick() {
 		
-		tameable.getLookController().setLookPositionWithEntity(followingEntity, 10.0F, (float)tameable.getVerticalFaceSpeed());
+		if (followingEntity != null) {
+			
+			tameable.getLookController().setLookPositionWithEntity(followingEntity, 10.0F, (float)tameable.getVerticalFaceSpeed());
+			
+		}
 		
 		if (tameable instanceof SledEntity) {
 			

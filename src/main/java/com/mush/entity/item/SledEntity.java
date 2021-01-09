@@ -461,14 +461,14 @@ public class SledEntity extends MobEntity implements ISledComponent {
 	protected void registerGoals() {
 		
 		this.goalSelector.addGoal(0, new SwimGoal(this));
-		this.goalSelector.addGoal(0, new FollowSledComponentGoal(this, 1.0, 3.0F, 64.0F, false));
+		this.goalSelector.addGoal(0, new FollowSledComponentGoal(this, 0.6, 3.0F, 64.0F, false));
 		//this.goalSelector.addGoal(5, new LookAtSledComponentGoal(this));
 		
 	}
 	
 	public static MutableAttribute registerSledAttributes() {
 		
-		return MobEntity.func_233666_p_().createMutableAttribute(Attributes.MAX_HEALTH, 10.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 1.0D);
+		return MobEntity.func_233666_p_().createMutableAttribute(Attributes.MAX_HEALTH, 2.5D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 1.0D);
 		
 	}
 	

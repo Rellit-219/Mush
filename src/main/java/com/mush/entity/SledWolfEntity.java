@@ -302,8 +302,8 @@ public class SledWolfEntity extends WolfEntity implements ISledComponent {
 	@Override
 	protected void registerGoals() {
 		
-		this.goalSelector.addGoal(0, new FollowSledComponentGoal(this, 1.0D, 3.0F, 64.0F, false));
-		this.goalSelector.addGoal(0, new SledLeaderControllingGoal(this, 1.0D, 3.0F, 64.0F, false));
+		this.goalSelector.addGoal(1, new FollowSledComponentGoal(this, 1.0D, 3.0F, 64.0F, false));
+		this.goalSelector.addGoal(1, new SledLeaderControllingGoal(this, 1.0D, 3.0F, 64.0F, false));
 		this.goalSelector.addGoal(5, new LookAtSledComponentGoal(this));
 		this.goalSelector.addGoal(1, new SwimGoal(this));
 		this.goalSelector.addGoal(2, new SitGoal(this));
