@@ -2,6 +2,7 @@ package com.mush;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.RotatedPillarBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
@@ -10,18 +11,24 @@ import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
 import net.minecraft.entity.passive.WolfEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.AxeItem;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.village.PointOfInterestType;
 import net.minecraft.world.FoliageColors;
 import net.minecraft.world.IBlockDisplayReader;
+import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeColors;
 import net.minecraft.world.biome.Biome.Category;
 import net.minecraft.world.gen.GenerationStage.Decoration;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
@@ -164,6 +171,45 @@ public class Mush {
 		if (event.getCategory() == Category.ICY || event.getCategory() == Category.TAIGA) {
 			
 			event.getGeneration().getFeatures(Decoration.VEGETAL_DECORATION).add(() -> Feature.TREE.withConfiguration(MFeatures.ASH_TREE_CONFIG).chance(2));
+			
+		}
+		
+	}
+	
+	@SubscribeEvent
+	public void addStrippingWoodMechanic(PlayerInteractEvent.RightClickBlock event) {
+		
+		World world = event.getWorld();
+		BlockPos blockPos = event.getPos();
+		BlockState blockstate = world.getBlockState(blockPos);
+		if (event.getItemStack().getItem() instanceof AxeItem && (blockstate.getBlock() == MBlocks.ASH_LOG.get() || blockstate.getBlock() == MBlocks.ASH_WOOD.get())) {
+			
+			PlayerEntity playerEntity = event.getPlayer();
+			world.playSound(playerEntity, blockPos, SoundEvents.ITEM_AXE_STRIP, SoundCategory.BLOCKS, 1.0F, 1.0F);
+			
+			if (!world.isRemote) {
+				
+				if (blockstate.getBlock() == MBlocks.ASH_LOG.get()) {
+					
+					world.setBlockState(blockPos, MBlocks.STRIPPED_ASH_LOG.get().getDefaultState().with(RotatedPillarBlock.AXIS, blockstate.get(RotatedPillarBlock.AXIS)), 11);
+					
+				} else if (blockstate.getBlock() == MBlocks.ASH_WOOD.get()) {
+					
+					world.setBlockState(blockPos, MBlocks.STRIPPED_ASH_WOOD.get().getDefaultState().with(RotatedPillarBlock.AXIS, blockstate.get(RotatedPillarBlock.AXIS)), 11);
+					
+				}
+				
+				if (playerEntity != null) {
+					
+					event.getItemStack().damageItem(1, playerEntity, (player) -> {
+						
+						player.sendBreakAnimation(event.getHand());
+						
+					});
+					
+				}
+				
+			}
 			
 		}
 		
