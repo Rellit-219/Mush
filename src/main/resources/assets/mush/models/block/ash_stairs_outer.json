@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "textures": {
+    "bottom": "mush:block/ash_planks",
+    "top": "mush:block/ash_planks",
+    "side": "mush:block/ash_planks"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/door_top",
+  "textures": {
+    "top": "mush:block/ash_door_top",
+    "bottom": "mush:block/ash_door_bottom"
+  }
+}

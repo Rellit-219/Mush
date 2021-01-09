@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "mush:block/ash_sign"
+    }
+  }
+}
